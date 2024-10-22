@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Your Islamic Reminder</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            /* Use relative path to the image in your folder */
+            background-image: url('images/background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.85); /* Slight transparency for elegance */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Softer shadow */
+            text-align: center;
+            width: 50%;
+            max-width: 600px;
+            transition: transform 0.3s ease;
+        }
+        .container:hover {
+            transform: translateY(-5px);
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #4f6367;
+            font-weight: bold;
+        }
+        .quote {
+            font-style: italic;
+            font-size: 22px;
+            color: #2f4858;
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+        .reference {
+            font-size: 18px;
+            color: #7a9e9f;
+            margin-bottom: 30px;
+        }
+        button {
+            padding: 12px 25px;
+            background-color: #4f6367;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #2f4858;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Islamic Reminder</h1>
+        <div class="quote" id="quote">Loading a Quranic quote...</div>
+        <div class="reference" id="reference"></div>
+        <button onclick="generateQuote()">Get a New Quote</button>
+    </div>
+
+    <script>
+        const quotes = [
+            // Quranic Verses
+            { quote: "Indeed, with hardship comes ease.", reference: "Surah Ash-Sharh (94:6)" },
+            { quote: "And whoever fears Allah – He will make for him a way out.", reference: "Surah At-Talaq (65:2)" },
+            { quote: "So be patient. Indeed, the promise of Allah is truth.", reference: "Surah Ar-Rum (30:60)" },
+            { quote: "Verily, in the remembrance of Allah do hearts find rest.", reference: "Surah Ar-Ra'd (13:28)" },
+            { quote: "And He found you lost and guided [you].", reference: "Surah Ad-Duha (93:7)" },
+            { quote: "And whoever relies upon Allah – then He is sufficient for him.", reference: "Surah At-Talaq (65:3)" },
+            { quote: "For indeed, it is not the eyes that are blinded, but blinded are the hearts which are within the breasts.", reference: "Surah Al-Hajj (22:46)" },
+            { quote: "And Allah would not punish them while they seek forgiveness.", reference: "Surah Al-Anfal (8:33)" },
+            { quote: "And We have certainly made the Quran easy for remembrance, so is there any who will remember?", reference: "Surah Al-Qamar (54:17)" },
+            { quote: "Say, 'The truth is from your Lord, so whoever wills - let him believe; and whoever wills - let him disbelieve.'", reference: "Surah Al-Kahf (18:29)" },
+            { quote: "And My Mercy encompasses all things.", reference: "Surah Al-A'raf (7:156)" },
+            { quote: "And He is with you wherever you are.", reference: "Surah Al-Hadid (57:4)" },
+            { quote: "He created death and life to test you as to which of you is best in deed.", reference: "Surah Al-Mulk (67:2)" },
+            { quote: "And whoever puts his trust in Allah, He will be enough for him.", reference: "Surah At-Talaq (65:3)" },
+            { quote: "So remember Me; I will remember you.", reference: "Surah Al-Baqarah (2:152)" },
+            { quote: "Indeed, Allah will not change the condition of a people until they change what is in themselves.", reference: "Surah Ar-Ra'd (13:11)" },
+            { quote: "And We have certainly honored the children of Adam.", reference: "Surah Al-Isra (17:70)" },
+            { quote: "But Allah is your protector, and He is the best of helpers.", reference: "Surah Al Imran (3:150)" },
+            { quote: "Say, 'Nothing will happen to us except what Allah has decreed for us: He is our protector.'", reference: "Surah At-Tawbah (9:51)" },
+            { quote: "Allah does not burden a soul beyond that it can bear.", reference: "Surah Al-Baqarah (2:286)" },
+            { quote: "So whoever does an atom’s weight of good will see it.", reference: "Surah Az-Zalzalah (99:7)" },
+            { quote: "Indeed, prayer prohibits immorality and wrongdoing.", reference: "Surah Al-Ankabut (29:45)" },
+            { quote: "Your ally is none but Allah and [therefore] His Messenger and those who have believed.", reference: "Surah Al-Ma'idah (5:55)" },
+            { quote: "Indeed, Allah is with the patient.", reference: "Surah Al-Baqarah (2:153)" },
+            { quote: "And whoever turns away from My remembrance - indeed, he will have a depressed life.", reference: "Surah Ta-Ha (20:124)" },
+
+            // Hadiths
+            { quote: "The best among you are those who have the best manners and character.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "Whoever follows a path in the pursuit of knowledge, Allah will make a path to Paradise easy for him.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "The strongest among you is the one who controls his anger.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "Do not waste water, even if performing ablution on the banks of a fast-flowing river.", reference: "Prophet Muhammad (PBUH) – Ibn Majah" },
+            { quote: "Make things easy and do not make things difficult. Cheer the people up by conveying glad tidings to them and do not repulse them.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "A good word is charity.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "The best of you are those who are best to their families.", reference: "Prophet Muhammad (PBUH) – Sunan Ibn Majah" },
+            { quote: "He who does not show mercy to others, will not be shown mercy.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "The most beloved deed to Allah is the most regular and constant, even if it were little.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "None of you truly believes until he loves for his brother what he loves for himself.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "The best of you are those who learn the Quran and teach it.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "Seek knowledge from the cradle to the grave.", reference: "Prophet Muhammad (PBUH) – Hadith" },
+            { quote: "Feed the hungry, visit the sick, and set free the captives.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "The believer is not a slanderer, nor does he curse others, and nor is he immoral or shameless.", reference: "Prophet Muhammad (PBUH) – Tirmidhi" },
+            { quote: "None of you will believe until you love for your brother what you love for yourself.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "The world is a prison for the believer and a paradise for the disbeliever.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "There is no disease that Allah has created, except that He has also created its treatment.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "Be in this world as though you were a stranger or a traveler.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "The supplication of every one of you will be granted as long as he does not get impatient and say, 'I supplicated but it was not granted.'", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "Allah does not look at your figures, nor at your attire but He looks at your hearts and deeds.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" }
+        ];
+
+        function generateQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            const randomQuote = quotes[randomIndex];
+            document.getElementById("quote").innerText = `"${randomQuote.quote}"`;
+            document.getElementById("reference").innerText = randomQuote.reference;
+        }
+
+        // Automatically generate a quote when the page loads
+        window.onload = generateQuote;
+    </script>
+</body>
+</html>
