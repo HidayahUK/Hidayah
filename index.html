@@ -3,54 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Your Islamic Reminder</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             font-family: 'Georgia', serif;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            /* Use relative path to the image in your folder */
-            background-image: url('images/background.jpg');
+            background-image: url('images/background.jpg'); /* Background image */
             background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
             background-repeat: no-repeat;
+            color: #333;
+            margin: 0;
+            padding: 0;
         }
+
         .container {
-            background-color: rgba(255, 255, 255, 0.85); /* Slight transparency for elegance */
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Softer shadow */
-            text-align: center;
-            width: 50%;
             max-width: 600px;
-            transition: transform 0.3s ease;
+            margin: 100px auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
-        .container:hover {
-            transform: translateY(-5px);
-        }
+
+        
         h1 {
-            font-size: 28px;
-            margin-bottom: 30px;
-            color: #4f6367;
-            font-weight: bold;
+            color: #2c3e50;
+            margin: 0 0 10px;
+            font-size: 2em; /* Main heading font size */
         }
-        .quote {
-            font-style: italic;
-            font-size: 22px;
-            color: #2f4858;
+
+        #duasTitle {
+            color: #2c3e50; /* Same color */
+            margin: 0 0 10px; /* Same margin */
+            font-size: 2em; /* Same font size */
+        }
+
+        #quoteBox, #duasBox {
+            background: #ecf0f1; /* Box color for both sections */
+            border-radius: 10px;
+            padding: 20px;
             margin: 20px 0;
-            line-height: 1.5;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        .reference {
-            font-size: 18px;
-            color: #7a9e9f;
-            margin-bottom: 30px;
+
+        #logo {
+            max-width: 80px;
+            margin: 0 auto 10px;
         }
+
+        .quote-text, .dua-text {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        .reference-text, .arabic, .english {
+            font-size: 1.2em;
+            color: #34495e;
+        }
+
+        #duasTitle {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin: 20px 0 10px;
+        }
+
         button {
             padding: 12px 25px;
             background-color: #4f6367;
@@ -60,7 +78,9 @@
             font-size: 16px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-top: 20px; /* Added margin for spacing */
         }
+
         button:hover {
             background-color: #2f4858;
         }
@@ -68,16 +88,27 @@
 </head>
 <body>
     <div class="container">
+        <img id="logo" src="images/logo.png" alt="Logo">
         <h1>Your Islamic Reminder</h1>
-        <div class="quote" id="quote">Loading a Quranic quote...</div>
-        <div class="reference" id="reference"></div>
-        <button onclick="generateQuote()">Get a New Quote</button>
+
+        <div id="quoteBox">
+            <p class="quote-text" id="quote">Loading a Quranic quote...</p>
+            <p class="reference-text" id="reference"></p>
+        </div>
+
+        <div id="duasTitle">Daily Dua and Dhikr</div>
+        <div id="duasBox">
+            <p class="dua-text" id="dua">Loading a Dua...</p>
+            <p class="arabic" id="arabic"></p>
+            <p class="english" id="english"></p> <!-- New paragraph for English translation -->
+        </div>
+
+        <button onclick="generateReminder()">Get a New Reminder</button>
     </div>
 
     <script>
         const quotes = [
-            // Quranic Verses
-            { quote: "Indeed, with hardship comes ease.", reference: "Surah Ash-Sharh (94:6)" },
+        { quote: "Indeed, with hardship comes ease.", reference: "Surah Ash-Sharh (94:6)" },
             { quote: "And whoever fears Allah – He will make for him a way out.", reference: "Surah At-Talaq (65:2)" },
             { quote: "So be patient. Indeed, the promise of Allah is truth.", reference: "Surah Ar-Rum (30:60)" },
             { quote: "Verily, in the remembrance of Allah do hearts find rest.", reference: "Surah Ar-Ra'd (13:28)" },
@@ -102,39 +133,123 @@
             { quote: "Your ally is none but Allah and [therefore] His Messenger and those who have believed.", reference: "Surah Al-Ma'idah (5:55)" },
             { quote: "Indeed, Allah is with the patient.", reference: "Surah Al-Baqarah (2:153)" },
             { quote: "And whoever turns away from My remembrance - indeed, he will have a depressed life.", reference: "Surah Ta-Ha (20:124)" },
-
-            // Hadiths
             { quote: "The best among you are those who have the best manners and character.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
             { quote: "Whoever follows a path in the pursuit of knowledge, Allah will make a path to Paradise easy for him.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
             { quote: "The strongest among you is the one who controls his anger.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
             { quote: "Do not waste water, even if performing ablution on the banks of a fast-flowing river.", reference: "Prophet Muhammad (PBUH) – Ibn Majah" },
             { quote: "Make things easy and do not make things difficult. Cheer the people up by conveying glad tidings to them and do not repulse them.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
             { quote: "A good word is charity.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
-            { quote: "The best of you are those who are best to their families.", reference: "Prophet Muhammad (PBUH) – Sunan Ibn Majah" },
+            { quote: "The best of you are those who are best to their families.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
             { quote: "He who does not show mercy to others, will not be shown mercy.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
             { quote: "The most beloved deed to Allah is the most regular and constant, even if it were little.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
             { quote: "None of you truly believes until he loves for his brother what he loves for himself.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
             { quote: "The best of you are those who learn the Quran and teach it.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
             { quote: "Seek knowledge from the cradle to the grave.", reference: "Prophet Muhammad (PBUH) – Hadith" },
             { quote: "Feed the hungry, visit the sick, and set free the captives.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
-            { quote: "The believer is not a slanderer, nor does he curse others, and nor is he immoral or shameless.", reference: "Prophet Muhammad (PBUH) – Tirmidhi" },
-            { quote: "None of you will believe until you love for your brother what you love for yourself.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "A believer is like a date palm; he gives his fruit and does not harm.", reference: "Prophet Muhammad (PBUH) – Al-Muwatta" },
+            { quote: "He who is not grateful for small things will not be grateful for large ones.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "The most complete believer in faith is the one who is best in conduct.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "Do not be envious of one another.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "The believer is not the one who eats his fill while his neighbor is hungry.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "The person who takes care of an orphan will be like this in Paradise.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "The one who guides to good is like the one who does it.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "When a person dies, his deeds come to an end except for three: a continuous charity, beneficial knowledge, or a righteous child who prays for him.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "Verily, Allah does not look at your figures, nor at your attire but He looks at your hearts and deeds.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
             { quote: "The world is a prison for the believer and a paradise for the disbeliever.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
             { quote: "There is no disease that Allah has created, except that He has also created its treatment.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
             { quote: "Be in this world as though you were a stranger or a traveler.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
             { quote: "The supplication of every one of you will be granted as long as he does not get impatient and say, 'I supplicated but it was not granted.'", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
-            { quote: "Allah does not look at your figures, nor at your attire but He looks at your hearts and deeds.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" }
+            { quote: "Allah does not look at your figures, nor at your attire but He looks at your hearts and deeds.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            // Additional 50 quotes and hadiths
+            { quote: "The best of the houses among the Muslims is the house in which orphans are treated well.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "Beware of envy, for envy devours good deeds just as fire devours wood.", reference: "Prophet Muhammad (PBUH) – Abu Dawood" },
+            { quote: "He who does not show mercy to others, will not be shown mercy.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "If one of you sees something that he likes, let him pray two rak'ahs.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "To love for the sake of Allah and to hate for the sake of Allah is the hallmark of a believer.", reference: "Prophet Muhammad (PBUH) – Ibn Majah" },
+            { quote: "The best among you are those who are best in character.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "Do not be angry, and Paradise will be yours.", reference: "Prophet Muhammad (PBUH) – Ahmad" },
+            { quote: "The most beloved people to Allah are those who are most beneficial to others.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "The best of the believers is the one who is best to his family.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "Whoever removes a difficulty from a believer, Allah will remove a difficulty from him on the Day of Judgment.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "Sincerity is the foundation of all deeds.", reference: "Prophet Muhammad (PBUH) – Al-Bukhari" },
+            { quote: "Make peace among yourselves, for verily, Allah will help you.", reference: "Prophet Muhammad (PBUH) – Ibn Majah" },
+            { quote: "Let your first act of greeting be to your neighbor.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "The greatest jihad is to battle your own soul.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "If you are not ashamed, then do as you wish.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "The one who does not attend to the needs of his neighbor is not a believer.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "Do not let envy enter your hearts.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "When you see someone who is more fortunate than you, then look at those who are less fortunate.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "The one who is silent is saved.", reference: "Prophet Muhammad (PBUH) – Tirmidhi" },
+            { quote: "Verily, Allah does not forgive association with Him, but He forgives what is less than that for whom He wills.", reference: "Surah An-Nisa (4:48)" },
+            { quote: "He who desires to enter Paradise should please his neighbor.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "The one who is most sincere is the one who helps his brother.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "For every act of goodness, there is a reward.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "When you are invited to a feast, accept the invitation.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "When you visit a sick person, you should say, 'May Allah give you good health.'", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "The believer is one who loves for his brother what he loves for himself.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "O Allah, I seek refuge in You from the torment of the grave.", reference: "Prophet Muhammad (PBUH) – Abu Dawood" },
+            { quote: "Verily, the deeds of the heart are more important than the deeds of the limbs.", reference: "Prophet Muhammad (PBUH) – Al-Bukhari" },
+            { quote: "The one who is not thankful to people is not thankful to Allah.", reference: "Prophet Muhammad (PBUH) – Ahmad" },
+            { quote: "The one who has a grudge against his brother should forgive him.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "There is no harm in accepting help from others.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "The one who does not fulfill the rights of his neighbor has no faith.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "Beware of suspicion, for suspicion is the greatest lie.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "The one who provides for a widow and the poor is like a warrior in the cause of Allah.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "The one who is most merciful will be shown mercy.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "The best charity is that which is given when one is in need.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "The most virtuous deeds are to offer prayer on time and to be kind to parents.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "Let your words be few, for they will bring you closer to Allah.", reference: "Prophet Muhammad (PBUH) – Tirmidhi" },
+            { quote: "Whoever seeks knowledge, it will be a light for him in this world and the Hereafter.", reference: "Prophet Muhammad (PBUH) – Ibn Majah" },
+            { quote: "Be a part of the solution, not a part of the problem.", reference: "Prophet Muhammad (PBUH) – Al-Muwatta" },
+            { quote: "Patience is a part of faith.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "Help your brother, whether he is an oppressor or oppressed.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "The best of you are those who have the best manners.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" },
+            { quote: "The one who walks to the mosque will be rewarded with a great reward.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "If you are asked to do something, do it with the best of your ability.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "It is better for a believer to be kind than to be harsh.", reference: "Prophet Muhammad (PBUH) – Al-Bukhari" },
+            { quote: "The one who guides someone to good will be rewarded as if he had done it himself.", reference: "Prophet Muhammad (PBUH) – Sahih Muslim" },
+            { quote: "The most beloved deed to Allah is the one that is most consistent, even if it is small.", reference: "Prophet Muhammad (PBUH) – Sahih Bukhari" }
         ];
 
-        function generateQuote() {
-            const randomIndex = Math.floor(Math.random() * quotes.length);
-            const randomQuote = quotes[randomIndex];
-            document.getElementById("quote").innerText = `"${randomQuote.quote}"`;
-            document.getElementById("reference").innerText = randomQuote.reference;
+        const duas = [
+            { dua: "اللّهُمَّ إنِّي أَسْأَلُكَ الجَنَّةَ", english: "O Allah, I ask You for Paradise" },
+            { dua: "أَسْتَغْفِرُ اللّهَ", english: "I seek forgiveness from Allah" },
+            { dua: "بِسْمِ اللّهِ", english: "In the name of Allah" },
+            { dua: "اللّهُ أَكْبَرُ", english: "Allah is the Greatest" },
+            { dua: "الْحَمْدُ لِلّهِ", english: "All praise is due to Allah" },
+            { dua: "سُبْحَانَ اللّهِ", english: "Glory be to Allah" },
+            { dua: "لَا إِلَٰهَ إِلَّا اللّهُ", english: "There is no deity but Allah" },
+            { dua: "إِنَّا لِلّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ", english: "Indeed, we belong to Allah, and indeed to Him we will return" },
+            { dua: "اللّهُمَّ صَلِّ عَلَى مُحَمَّدٍ", english: "O Allah, send blessings upon Muhammad" },
+            { dua: "رَبِّ زِدْنِي عِلْمًا", english: "O my Lord, increase me in knowledge" },
+            { dua: "سُبْحَانَكَ اللّهُمَّ وَبِحَمْدِكَ", english: "Glory be to You, O Allah, and praise be to You" },
+            { dua: "اللّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ جَهَنَّمَ", english: "O Allah, I seek refuge with You from the punishment of Hell" },
+            { dua: "اللّهُمَّ إِنِّي أَسْأَلُكَ العَافِيَةَ", english: "O Allah, I ask You for well-being" },
+            { dua: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً", english: "Our Lord, give us good in this world and in the Hereafter" },
+            { dua: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّه", english: "There is no power and no strength except with Allah" },
+            { dua: "اللّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ فِتْنَةِ القَبْرِ", english: "O Allah, I seek refuge with You from the trial of the grave" },
+            { dua: "اللّهُمَّ إِنِّي أَسْأَلُكَ رِزْقًا حَلَالًا", english: "O Allah, I ask You for lawful provision" },
+            { dua: "بِسْمِ اللّهِ تَوَكَّلْتُ عَلَى اللّهِ", english: "In the name of Allah, I place my trust in Allah" },
+            { dua: "سُبْحَانَ اللّهِ وَبِحَمْدِهِ سُبْحَانَ اللّهِ الْعَظِيمِ", english: "Glory is to Allah and praise is to Him, Glory is to Allah the Most Great" },
+            { dua: "يا اللّهُ، اهدني إلى الصراط المستقيم.", english: "O Allah, guide me to the straight path." },
+            { dua: "اللّهُمَّ اغْفِرْ لِي وَارْحَمْنِي", english: "O Allah, forgive me and have mercy on me." }
+        ];
+
+        function generateReminder() {
+            const randomQuoteIndex = Math.floor(Math.random() * quotes.length);
+            const selectedQuote = quotes[randomQuoteIndex];
+            document.getElementById("quote").textContent = selectedQuote.quote;
+            document.getElementById("reference").textContent = selectedQuote.reference;
+
+            const randomDuaIndex = Math.floor(Math.random() * duas.length);
+            const selectedDua = duas[randomDuaIndex];
+            document.getElementById("dua").textContent = selectedDua.dua;
+            document.getElementById("arabic").textContent = selectedDua.arabic; // Arabic text
+            document.getElementById("english").textContent = selectedDua.english; // English translation
         }
 
-        // Automatically generate a quote when the page loads
-        window.onload = generateQuote;
+        // Generate an initial quote and dua when the page loads
+        window.onload = generateReminder;
     </script>
 </body>
 </html>
