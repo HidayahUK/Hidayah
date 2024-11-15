@@ -18,8 +18,8 @@
         }
 
         .container {
-            max-width: 800px;
-            margin: 100px auto;
+            max-width: 1000px;
+            margin: 0px auto;
             background: rgba(0, 0, 0, 0.527);
             border-radius: 10px;
             padding: 20px;
@@ -31,6 +31,12 @@
             color: #ffffff;
             margin: 0 0 10px;
             font-size: 2em; /* Main heading font size */
+            
+        }
+
+        h2 {
+        font-weight: normal; /* Remove bold styling */
+
         }
 
         #duasTitle {
@@ -44,7 +50,7 @@
             border-radius: 10px;
             padding: 20px;
             margin: 20px 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0);
         }
 
         #logo {
@@ -66,11 +72,12 @@
             font-size: 1.8em;
             color: #ffffff;
             margin: 20px 0 10px;
+            font-weight: bold; /* Remove bold styling */
         }
 
         button {
             padding: 12px 25px;
-            background-color: #4f6367;
+            background-color: #c2a075a8;
             color: #fff;
             border: none;
             border-radius: 25px;
@@ -87,7 +94,7 @@
 
   /* Dhikr section styling */
   .dhikr-title {
-            font-size: 1.4em;
+            font-size: 1.5em;
             margin: 20px 0 10px;
             color: #ffffff;
         }
@@ -149,7 +156,7 @@
 
     <script>
         const quotes = [
-            { quote: "Indeed, with hardship comes ease.", reference: "Surah Ash-Sharh (94:6)" },
+        { quote: "Indeed, with hardship comes ease.", reference: "Surah Ash-Sharh (94:6)" },
             { quote: "And whoever fears Allah – He will make for him a way out.", reference: "Surah At-Talaq (65:2)" },
             { quote: "So be patient. Indeed, the promise of Allah is truth.", reference: "Surah Ar-Rum (30:60)" },
             { quote: "Verily, in the remembrance of Allah do hearts find rest.", reference: "Surah Ar-Ra'd (13:28)" },
@@ -253,38 +260,82 @@
         ];
 
         const duas = [
-            {
-                category: "Dua for Forgiveness",
-                dua: "Allahumma ighfir li dhanbi kullahu, dikkahu wa jillahu, wa awwalahu wa akhirahu, wa ‘alaaniyatahu wa sirrahu.",
-                arabic: "اللّهُمَّ اغْفِرْ لِي ذَنْبِي كُلَّهُ، دِقَّهُ وَجِلَّهُ، وَأَوَّلَهُ وَآخِرَهُ، وَعَلانِيَتَهُ وَسِرَّهُ",
-                english: "O Allah! Forgive me all my sins, the small and the large, the first and the last, the open and the secret."
-            },
-            {
-                category: "Dua for Healing",
-                dua: "Allahumma inni as'aluka al-shifaa'a al-kamil.",
-                arabic: "اللّهُمَّ إنِّي أَسْأَلُكَ الشِّفَاءَ الْكَامِلَ",
-                english: "O Allah! I ask You for complete healing."
-            },
-            {
-                category: "Dua for Guidance",
-                dua: "Allahumma inni as'aluka al-huda, wa al-tuqaa, wa al-'afafa, wa al-ghina.",
-                arabic: "اللّهُمَّ إنِّي أَسْأَلُكَ الْهُدَى، وَالتُّقَى، وَالْعَفَافَ، وَالْغِنَى",
-                english: "O Allah! I ask You for guidance, piety, chastity, and self-sufficiency."
-            }
+        {
+        category: "Dua for Forgiveness",
+        dua: "Allahumma ighfir li dhanbi kullahu, dikkahu wa jillahu, wa awwalahu wa akhirahu, wa ‘alaaniyatahu wa sirrahu.",
+        arabic: "اللّهُمَّ اغْفِرْ لِي ذَنْبِي كُلَّهُ، دِقَّهُ وَجِلَّهُ، وَأَوَّلَهُ وَآخِرَهُ، وَعَلانِيَتَهُ وَسِرَّهُ",
+        english: "O Allah! Forgive me all my sins, the small and the large, the first and the last, the open and the secret."
+    },
+    {
+        category: "Dua for Forgiveness",
+        dua: "Rabbana la tuzikh qulubana ba'da idh hadaytana wa hab lana min ladunka rahma. Innaka anta al-Wahhab.",
+        arabic: "رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِن لَّدُنْكَ رَحْمَةً إِنَّكَ أَنتَ الْوَهَّاب",
+        english: "Our Lord, do not let our hearts deviate after You have guided us, and grant us from Yourself mercy. Indeed, You are the Bestower."
+    },
+    {
+        category: "Dua for Forgiveness",
+        dua: "Allahumma maghfir li wa li walidayya wa lil mu'mineen wa lil mu'minaat.",
+        arabic: "اللّهُمَّ اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ وَلِلْمُؤْمِنَات",
+        english: "O Allah, forgive me, my parents, and the believing men and women."
+    },
+    {
+        category: "Dua for Healing",
+        dua: "Allahumma inni as'aluka al-shifaa'a al-kamil.",
+        arabic: "اللّهُمَّ إِنِّي أَسْأَلُكَ الشِّفَاءَ الْكَامِلَ",
+        english: "O Allah! I ask You for complete healing."
+    },
+    {
+        category: "Dua for Healing",
+        dua: "As'aluka Allahu rabbal 'arshil 'azeem an yashfiyani.",
+        arabic: "أَسْأَلُكَ اللَّهَ رَبَّ الْعَرْشِ الْعَظِيمِ أَنْ يَشْفِيَنِي",
+        english: "I ask You, Allah, Lord of the Mighty Throne, to cure me."
+    },
+    {
+        category: "Dua for Healing",
+        dua: "Allahumma shfi abdan wa as'aluuka an tu'afiyahu min kulli da'in.",
+        arabic: "اللّهُمَّ اشْفِ عَبْدًا وَأَسْأَلُكَ أَنْ تُعَافِيَهُ مِنْ كُلِّ دَاءٍ",
+        english: "O Allah, heal Your servant and I ask You to protect him from every illness."
+    },
+    {
+        category: "Dua for Guidance",
+        dua: "Allahumma inni as'aluka al-huda, wa al-tuqaa, wa al-'afafa, wa al-ghina.",
+        arabic: "اللّهُمَّ إنِّي أَسْأَلُكَ الْهُدَى، وَالتُّقَى، وَالْعَفَافَ، وَالْغِنَى",
+        english: "O Allah! I ask You for guidance, piety, chastity, and self-sufficiency."
+    },
+    {
+        category: "Dua for Guidance",
+        dua: "Rabbana atina fid-dunya hasanatan wa fil akhirati hasanatan wa qina azab an-nar.",
+        arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّار",
+        english: "Our Lord, give us good in this world and good in the Hereafter, and protect us from the punishment of the Fire."
+    },
+    {
+        category: "Dua for Guidance",
+        dua: "Ihdinas-sirat al-mustaqim.",
+        arabic: "اِهْدِنَا الصِّرَاطَ الْمُسْتَقِيم",
+        english: "Guide us to the straight path."
+    }
         ];
 
         function generateReminder() {
-            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-            const randomDua = duas[Math.floor(Math.random() * duas.length)];
+    // Randomly select a quote from the quotes array
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
-            document.getElementById('quote').innerText = randomQuote.quote;
-            document.getElementById('reference').innerText = randomQuote.reference;
+    // Randomly select a dua from the duas array
+    const randomDua = duas[Math.floor(Math.random() * duas.length)];
 
-            document.getElementById('duaTitle').innerText = randomDua.category;
-            document.getElementById('arabic').innerText = randomDua.arabic;
-            document.getElementById('dua').innerText = randomDua.dua;
-            document.getElementById('english').innerText = randomDua.english;
-        }
+    // Update the DOM with the selected quote and dua
+    document.getElementById('quote').innerText = randomQuote.quote;
+    document.getElementById('reference').innerText = randomQuote.reference;
+
+    // Set the category as a heading (h2)
+    const duaTitleElement = document.getElementById('duaTitle');
+    duaTitleElement.innerHTML = `<h2>${randomDua.category}</h2>`;  // Category as an h2 element
+    
+    document.getElementById('arabic').innerText = randomDua.arabic;
+    document.getElementById('dua').innerText = randomDua.dua;
+    document.getElementById('english').innerText = randomDua.english;
+}
+
 
         // Initial loading
         window.onload = generateReminder;
