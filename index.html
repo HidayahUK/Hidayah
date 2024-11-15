@@ -88,7 +88,7 @@
         }
 
         button:hover {
-            background-color: #c2a075a8;
+            background-color: #2f4858;
         }
 
 
@@ -109,6 +109,21 @@
             font-style: italic;
             color: #ffffff;
         }
+
+#dhikrButton {
+    padding: 12px 25px;
+    background-color: transparent; /* No fill at the start */
+    border: 2px solid white; /* White border */
+    color: white;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition for color fill */
+}
+
+.dhikr-button:hover {
+    background-color: #2f4858;
+}
     </style>
 </head>
 <body>
@@ -128,28 +143,22 @@
             <p class="dua-text" id="dua">Loading a Dua...</p>
             <p class="english" id="english"></p> <!-- English translation below Arabic -->
 
-            <!-- Dhikr Phrases -->
-            <br> <!-- Add space before Dhikr -->
-            <div class="dhikr">
-                <h2 class="dhikr-title">Dhikr</h2>
-                <p>Recite 33 times each.</p>
-                <p>------------------------------------</p>
-                <p>سُبْحَانَ الله</p>
-                <p>Subhana rubbiyal a'ala</p>
-                <p>Glory be to Allah</p>
-                <p>------------------------------------</p>
-                <p>الْحَمْدُ لله</p>
-                <p>Alhamdullilah</p>
-                <p>All praise is due to Allah</p>
-                <p>------------------------------------</p>
-                <p>الله أكبر</p>
-                <p>Allaahu Akbar</p>
-                <p>Allah is the Greatest</p>
-                <p>------------------------------------</p>
-                <p>أستغفر الله</p>
-                <p>Astaghfurullah</p>
-                <p>I seek forgiveness from Allah</p>
-        </div>
+            <!-- Dhikr Section -->
+<br>
+<div class="dhikr">
+    <h2 class="dhikr-title">Dhikr</h2>
+    <p>Recite 33 times each.</p>
+    <p>------------------------------------</p>
+
+    <!-- Dhikr Display -->
+    <div id="currentDhikr">
+        <p id="dhikrText">سُبْحَانَ الله</p>
+        <p id="dhikrTranslation">Subhana rubbiyal a'ala</p>
+        <p id="dhikrMeaning">Glory be to Allah</p>
+        <button id="dhikrButton" onclick="incrementDhikr()">Recite</button>
+        <p id="dhikrCount">Count: 0/33</p>
+    </div>
+</div>
 
         <button onclick="generateReminder()">Get a New Reminder</button>
     </div>
@@ -336,6 +345,92 @@
     document.getElementById('english').innerText = randomDua.english;
 }
 
+const dhikrList = [
+    {
+        text: "سُبْحَانَ الله",
+        translation: "Subhana rubbiyal a'ala",
+        meaning: "Glory be to Allah",
+        count: 0
+    },
+    {
+        text: "الْحَمْدُ لله",
+        translation: "Alhamdullilah",
+        meaning: "All praise is due to Allah",
+        count: 0
+    },
+    {
+        text: "الله أكبر",
+        translation: "Allaahu Akbar",
+        meaning: "Allah is the Greatest",
+        count: 0
+    },
+    {
+        text: "أستغفر الله",
+        translation: "Astaghfurullah",
+        meaning: "I seek forgiveness from Allah",
+        count: 0
+    }
+];
+
+// Current Dhikr index
+let currentDhikrIndex = 0;
+
+// Function to handle Dhikr recitation
+function incrementDhikr() {
+    const currentDhikr = dhikrList[currentDhikrIndex];
+
+    // If the count is less than 33, increment it
+    if (currentDhikr.count < 33) {
+        currentDhikr.count++;  // Increment count
+
+        // Update the Dhikr recitation count on the page
+        document.getElementById("dhikrCount").innerText = `Count: ${currentDhikr.count}/33`;
+
+        // Gradually change the button's background color as recitations progress
+        const button = document.getElementById("dhikrButton");
+        const progress = currentDhikr.count / 33;
+
+        // Calculate the alpha value (opacity) for the background color based on progress
+        const alphaValue = Math.floor(255 * progress).toString(16).padStart(2, '0');  // Convert to hex and ensure it's two digits
+
+        // Set the background color to gradually fill with #c2a075a8 as progress increases
+        button.style.backgroundColor = `#c2a075${alphaValue}`;
+
+        // Change border color to match the background color as well
+        button.style.borderColor = `#c2a075${alphaValue}`;
+
+        // If 33 recitations are completed, move to the next Dhikr
+        if (currentDhikr.count === 33) {
+            alert(`${currentDhikr.translation} completed!`);
+            currentDhikr.count = 0;  // Reset current Dhikr count
+            currentDhikrIndex++;  // Move to the next Dhikr
+
+            // If all Dhikrs are completed
+            if (currentDhikrIndex >= dhikrList.length) {
+                document.getElementById("dhikrButton").innerText = "Completed All Dhikr!";
+                document.getElementById("dhikrButton").disabled = true;
+                return;  // Stop further progress if all Dhikr are done
+            }
+
+            // Update to show the next Dhikr
+            updateDhikrDisplay();
+        }
+    }
+}
+
+function updateDhikrDisplay() {
+    const currentDhikr = dhikrList[currentDhikrIndex];
+
+    // Update the Dhikr text, translation, and meaning
+    document.getElementById("dhikrText").innerText = currentDhikr.text;
+    document.getElementById("dhikrTranslation").innerText = currentDhikr.translation;
+    document.getElementById("dhikrMeaning").innerText = currentDhikr.meaning;
+    document.getElementById("dhikrCount").innerText = `Count: ${currentDhikr.count}/33`;
+    document.getElementById("dhikrButton").innerText = "Recite";
+}
+
+// Initialize the first Dhikr display
+updateDhikrDisplay();
 
         // Initial loading
         window.onload = generateReminder;
